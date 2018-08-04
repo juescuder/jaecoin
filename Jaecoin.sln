@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jaecoin.Blockchain", "Jaecoin.Blockchain\Jaecoin.Blockchain.csproj", "{4A660B84-FBC9-4B13-ADD5-B72305DBEC74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jaecoin.WebAPI", "Jaecoin.WebAPI\Jaecoin.WebAPI.csproj", "{2CD77814-420B-4B38-8F59-A360DF7CE1B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jaecoin.Miner", "Jaecoin.Miner\Jaecoin.Miner.csproj", "{6716FE51-52A7-4968-8383-063FC88209C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4A660B84-FBC9-4B13-ADD5-B72305DBEC74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A660B84-FBC9-4B13-ADD5-B72305DBEC74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A660B84-FBC9-4B13-ADD5-B72305DBEC74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A660B84-FBC9-4B13-ADD5-B72305DBEC74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CD77814-420B-4B38-8F59-A360DF7CE1B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CD77814-420B-4B38-8F59-A360DF7CE1B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CD77814-420B-4B38-8F59-A360DF7CE1B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CD77814-420B-4B38-8F59-A360DF7CE1B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6716FE51-52A7-4968-8383-063FC88209C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6716FE51-52A7-4968-8383-063FC88209C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6716FE51-52A7-4968-8383-063FC88209C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6716FE51-52A7-4968-8383-063FC88209C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8BC6F992-5E8C-4CC0-A8D2-696D2921D6F0}
+	EndGlobalSection
+EndGlobal
