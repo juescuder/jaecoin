@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace Jaecoin.WebAPI.Models
 {
-    public class ProofOfWork
+    public class NodeModel
     {
-        public int lastProof;
-        public string previousHash;
-        public int proof;
+        public string Name { get; set; }
+        public string Address { get; set; }
     }
 }

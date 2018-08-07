@@ -13,13 +13,14 @@ namespace Jaecoin.Miner
     {
         static void Main(string[] args)
         {
-            string address = "http://localhost:29005";
+            string address = args.Length > 1 ? args[1] : "http://localhost:29005"; //http://jaechain.azurewebsites.net
             string pathLast = "/api/mine/last";
             string pathMine = "/api/mine";
+            decimal hashRate = 0;
             int proof = 0;
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("-- JAECOIN MINER --");
+            Console.WriteLine("------ JAECOIN MINER v0.1b ------");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine(DateTime.Now.ToShortTimeString() + " - Starting to mine...");
 
@@ -27,13 +28,16 @@ namespace Jaecoin.Miner
             while (true)
             {
                 //I get the last PoW available
-                dynamic last = GetLastPoW(address + pathLast);
-                proof = last.lastProof + 1;
+                Console.WriteLine(DateTime.Now.ToShortTimeString() + " - Getting last result...");
 
-                Console.WriteLine(DateTime.Now.ToShortTimeString() + " - Getting last PoW...");
+                dynamic last = GetLastResult(address + pathLast);
+                proof = last.lastProof + 1;
+                
                 Stopwatch elapsed = new Stopwatch();
                 elapsed.Start();
 
+                Console.WriteLine(DateTime.Now.ToShortTimeString() + " - Last result obtained. Mining...");
+                
                 //Until I get a valid proof
                 while (!IsValidProof(last.lastProof, proof, last.previousHash))
                     proof++;
@@ -41,9 +45,15 @@ namespace Jaecoin.Miner
                 elapsed.Stop();
 
                 //I send the proof to the node (address).
-                SendPoW(address + pathMine, last.lastProof, last.previousHash, proof);
+                SendResult(address + pathMine, last.lastProof, last.previousHash, proof);
 
-                Console.WriteLine(DateTime.Now.ToShortTimeString() + " - PoW found and sent! ({0}ms)", elapsed.ElapsedMilliseconds);
+                hashRate = ((decimal)((proof - last.lastProof) / ((decimal)(elapsed.ElapsedMilliseconds / 1000)))) / 1024; //to transform it to kilohashes
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(DateTime.Now.ToShortTimeString() + " - Result found and sent! ({0}s)", elapsed.ElapsedMilliseconds / 1000);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine(" - {0} kh/s", hashRate.ToString("##.#"));
+                Console.ForegroundColor = ConsoleColor.White;
 
                 //I restart the proof?? and I sleep for 5 seconds.
                 //proof = 0;
@@ -51,7 +61,7 @@ namespace Jaecoin.Miner
             }
         }
 
-        private static dynamic GetLastPoW(string fullAddress)
+        private static dynamic GetLastResult(string fullAddress)
         {
             HttpWebRequest request = WebRequest.CreateHttp(fullAddress);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -62,10 +72,10 @@ namespace Jaecoin.Miner
                 json = reader.ReadToEnd();
             }
 
-            return JsonConvert.DeserializeObject<LastMined>(json);
+            return JsonConvert.DeserializeObject<Last>(json);
         }
 
-        private static void SendPoW(string fullAddress, int lstProof, string prevHash, int newProof)
+        private static void SendResult(string fullAddress, int lstProof, string prevHash, int newProof)
         {
             HttpWebRequest request = WebRequest.CreateHttp(fullAddress);
             request.Method = "POST";
@@ -93,7 +103,7 @@ namespace Jaecoin.Miner
         {
             string guess = $"{lastProof}{proof}{previousHash}";
             string result = GetSha256(guess);
-            return result.StartsWith("00000");
+            return result.StartsWith("00000"); //to change dynamically based on the total blockchain hashing rate
         }
 
         private static string GetSha256(string data)

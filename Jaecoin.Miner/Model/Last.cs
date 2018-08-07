@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Jaecoin.Miner.Model
 {
-    internal class LastMined
+    internal class Last
     {
         public int lastProof;
         public string previousHash;

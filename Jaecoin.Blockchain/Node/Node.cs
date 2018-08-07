@@ -6,6 +6,7 @@ namespace Jaecoin.Blockchain
 {
     public class Node
     {
+        public string Name { get; set; }
         public Uri Address { get; set; }
     }
 }

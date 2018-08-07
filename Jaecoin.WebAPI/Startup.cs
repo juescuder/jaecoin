@@ -25,6 +25,8 @@ namespace Jaecoin.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            //To add blockchain object using singleton (only one instance)
             services.AddSingleton<IBlockchain, Blockchain.Blockchain>();
         }
 

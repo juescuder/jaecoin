@@ -17,20 +17,23 @@ namespace Jaecoin.Blockchain
         private Block _lastBlock => _chain.Last();
 
         public string NodeId { get; private set; }
-        public int LastProof { get; private set; }
-        public string LastHash { get; private set; }
+        public int LastProof
+        {
+            get { return this._lastBlock.Proof;  }
+        }
+        public string LastHash
+        {
+            get { return this._lastBlock.PreviousHash; }
+        }
 
-        //ctor
         public Blockchain()
         {
-            this.LastProof = 100;
-            this.LastHash = "1";
             NodeId = Guid.NewGuid().ToString().Replace("-", "");
             CreateNewBlock(proof: 100, previousHash: "1"); //genesis block
         }
 
-        //private functionality
-        private void RegisterNode(string address)
+        #region Private methods
+        private void AddNode(string name, string address)
         {
             _nodes.Add(new Node { Address = new Uri(address) });
         }
@@ -113,15 +116,6 @@ namespace Jaecoin.Blockchain
             return block;
         }
 
-        /*private int CreateProofOfWork(int lastProof, string previousHash)
-        {
-            int proof = 0;
-            while (!IsValidProof(lastProof, proof, previousHash))
-                proof++;
-
-            return proof;
-        }*/
-
         private bool IsValidProof(int lastProof, int proof, string previousHash)
         {
             string guess = $"{lastProof}{proof}{previousHash}";
@@ -148,7 +142,9 @@ namespace Jaecoin.Blockchain
 
             return hashBuilder.ToString();
         }
+        #endregion
 
+        #region Public methods
         public string Mine(int proofOfWork)
         {
             if (this.IsValidProof(_lastBlock.Proof, proofOfWork, _lastBlock.PreviousHash))
@@ -165,9 +161,6 @@ namespace Jaecoin.Blockchain
                     Proof = block.Proof,
                     PreviousHash = block.PreviousHash
                 };
-
-                this.LastProof = block.Proof;
-                this.LastHash = block.PreviousHash;
 
                 return JsonConvert.SerializeObject(response);
             }
@@ -195,19 +188,11 @@ namespace Jaecoin.Blockchain
             return JsonConvert.SerializeObject(response);
         }
 
-        public string RegisterNodes(string[] nodes)
+        public string RegisterNode(string name, string address)
         {
-            var builder = new StringBuilder();
-            foreach (string node in nodes)
-            {
-                string url = $"http://{node}";
-                RegisterNode(url);
-                builder.Append($"{url}, ");
-            }
+            AddNode(name, address);
 
-            builder.Insert(0, $"{nodes.Count()} new nodes have been added: ");
-            string result = builder.ToString();
-            return result.Substring(0, result.Length - 2);
+            return $"Node:{name}with address{address}was added at{DateTime.UtcNow.ToShortTimeString()}.";
         }
 
         public string Consensus()
@@ -237,5 +222,6 @@ namespace Jaecoin.Blockchain
 
             return _lastBlock != null ? _lastBlock.Index + 1 : 0;
         }
+        #endregion
     }
 }

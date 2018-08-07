@@ -20,11 +20,24 @@ namespace Jaecoin.WebAPI.Controllers
             this._blockchain = block as Blockchain.Blockchain;
         }
 
+        #region Mine
         [Route("api/mine")]
         [HttpPost]
-        public string Mine([FromBody]ProofOfWork proofOfWork)
+        public string Mine([FromBody]ProofOfWorkModel proofOfWork)
         {
             return this._blockchain.Mine(proofOfWork.proof);
+        }
+
+        [Route("api/mine/difficulty")]
+        public string Difficulty()
+        {
+            var data = new
+            {
+                difficulty = "0000",
+                hashrate = "000.0",
+            };
+
+            return JsonConvert.SerializeObject(data);
         }
 
         [Route("api/mine/last")]
@@ -38,30 +51,32 @@ namespace Jaecoin.WebAPI.Controllers
 
             return JsonConvert.SerializeObject(last);
         }
+        #endregion
 
+        #region Transaction
         [Route("api/transaction/new")]
-        public string NewTransaction()
+        [HttpPost]
+        public string NewTransaction([FromBody] TransactionModel trx)
         {
-            string json = new StreamReader(this.Request.Body).ReadToEnd();
-            Transaction trx = JsonConvert.DeserializeObject<Transaction>(json);
             int blockId = _blockchain.CreateTransaction(trx.Sender, trx.Recipient, trx.Amount);
             return $"Your transaction will be included in block {blockId}";
         }
+        #endregion
 
+        #region Chain
         [Route("api/chain")]
         public string Chain()
         {
             return this._blockchain.GetFullChain();
         }
+        #endregion
 
+        #region Nodes
         [Route("api/nodes/register")]
-        public string RegisterNode()
+        [HttpPost]
+        public string RegisterNode([FromBody] NodeModel node)
         {
-            string json = new StreamReader(this.Request.Body).ReadToEnd();
-            var urlList = new { Urls = new string[0] };
-            var obj = JsonConvert.DeserializeAnonymousType(json, urlList);
-            return _blockchain.RegisterNodes(obj.Urls);
-
+            return _blockchain.RegisterNode(node.Name, node.Address);
         }
 
         [Route("api/nodes/resolve")]
@@ -69,6 +84,6 @@ namespace Jaecoin.WebAPI.Controllers
         {
             return _blockchain.Consensus();
         }
-
+        #endregion
     }
 }
