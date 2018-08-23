@@ -11,12 +11,16 @@ namespace Jaecoin.Blockchain
 {
     public class Blockchain : IBlockchain
     {
-        private List<Transaction> _currentTransactions = new List<Transaction>();
+        private List<ITransaction> _currentTransactions = new List<ITransaction>();
         private List<Block> _chain = new List<Block>();
         private List<Node> _nodes = new List<Node>();
         private Block _lastBlock => _chain.Last();
 
         public string NodeId { get; private set; }
+        public int LastIndex
+        {
+            get { return this._lastBlock.Index; }
+        }
         public int LastProof
         {
             get { return this._lastBlock.Proof;  }
@@ -24,6 +28,13 @@ namespace Jaecoin.Blockchain
         public string LastHash
         {
             get { return this._lastBlock.PreviousHash; }
+        }
+        public string Nodes
+        {
+            get
+            {
+                return JsonConvert.SerializeObject(this._nodes);
+            }
         }
 
         public Blockchain()
@@ -149,7 +160,7 @@ namespace Jaecoin.Blockchain
         {
             if (this.IsValidProof(_lastBlock.Proof, proofOfWork, _lastBlock.PreviousHash))
             {
-                CreateTransaction(sender: "0", recipient: NodeId, amount: 1);
+                //CreateTransaction(sender: "0", recipient: NodeId, amount: 1);
                 Block block = CreateNewBlock(proofOfWork);
 
                 var response = new
@@ -209,15 +220,8 @@ namespace Jaecoin.Blockchain
             return JsonConvert.SerializeObject(response);
         }
 
-        public int CreateTransaction(string sender, string recipient, int amount)
+        public int CreateTransaction(Transaction transaction)
         {
-            var transaction = new Transaction
-            {
-                Sender = sender,
-                Recipient = recipient,
-                Amount = amount
-            };
-
             _currentTransactions.Add(transaction);
 
             return _lastBlock != null ? _lastBlock.Index + 1 : 0;

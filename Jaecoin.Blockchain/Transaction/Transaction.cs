@@ -4,10 +4,22 @@ using System.Text;
 
 namespace Jaecoin.Blockchain
 {
-    public class Transaction
+    public class Transaction : ITransaction
     {
-        public int Amount { get; set; }
+        public TransactionType TransactionType { get; set; }
         public string Recipient { get; set; }
         public string Sender { get; set; }
+
+        public int Amount { get; set; }
+        public string Content { get; set; }
+
+        public Transaction()
+        {
+        }
+
+        public string TransactionId()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

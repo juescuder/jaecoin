@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Jaecoin.Blockchain
 {
-    public interface ITransaction
+    public enum TransactionType
     {
-        string TransactionId();
+        Coin = 1,
+        Content = 2,
     }
 }

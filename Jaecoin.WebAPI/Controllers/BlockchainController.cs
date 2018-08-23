@@ -58,7 +58,14 @@ namespace Jaecoin.WebAPI.Controllers
         [HttpPost]
         public string NewTransaction([FromBody] TransactionModel trx)
         {
-            int blockId = _blockchain.CreateTransaction(trx.Sender, trx.Recipient, trx.Amount);
+            Transaction transaction = new Transaction();
+            transaction.TransactionType = (TransactionType)trx.TransactionType;
+            transaction.Sender = trx.Sender;
+            transaction.Recipient = trx.Recipient;
+            transaction.Amount = trx.Amount;
+            transaction.Content = trx.Content;
+
+            int blockId = _blockchain.CreateTransaction(transaction);
             return $"Your transaction will be included in block {blockId}";
         }
         #endregion
@@ -83,6 +90,12 @@ namespace Jaecoin.WebAPI.Controllers
         public string ResolveNode()
         {
             return _blockchain.Consensus();
+        }
+
+        [Route("api/nodes")]
+        public string Nodes()
+        {
+            return JsonConvert.SerializeObject(_blockchain.Nodes);
         }
         #endregion
     }

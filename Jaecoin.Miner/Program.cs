@@ -13,7 +13,7 @@ namespace Jaecoin.Miner
     {
         static void Main(string[] args)
         {
-            string address = args.Length > 1 ? args[1] : "http://localhost:29005"; //http://jaechain.azurewebsites.net
+            string address = args.Length > 1 ? args[1] : "http://localhost/jaecoin"; //http://jaechain.azurewebsites.net
             string pathLast = "/api/mine/last";
             string pathMine = "/api/mine";
             decimal hashRate = 0;

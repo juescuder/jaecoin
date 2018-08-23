@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Jaecoin.Blockchain
 {
-    public class Block
+    public class Block : IBlock
     {
         public int Index { get; set; }
         public DateTime Timestamp { get; set; }
-        public List<Transaction> Transactions { get; set; }
+        public List<ITransaction> Transactions { get; set; }
         public int Proof { get; set; }
         public string PreviousHash { get; set; }
 

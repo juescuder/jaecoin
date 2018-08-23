@@ -7,8 +7,11 @@ namespace Jaecoin.WebAPI.Models
 {
     public class TransactionModel
     {
-        public int Amount { get; set; }
+        public int TransactionType { get; set; }
         public string Recipient { get; set; }
         public string Sender { get; set; }
+
+        public int Amount { get; set; }
+        public string Content { get; set; }
     }
 }
