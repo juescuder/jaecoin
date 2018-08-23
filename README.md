@@ -1,5 +1,5 @@
 # jaecoin
-Proof of Concept for blockchain and cryptocurrency implementation (based on Daniel van Flymen approach)
+Proof of Concept for blockchain and cryptocurrency implementation (based on Hackernoon version)
 
 This is an adapted version using .NET Core, which were modified and extended to include Miner and WebAPI.
 Future releases will consistently differ from the original approach.
