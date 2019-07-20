@@ -21,7 +21,7 @@
       }
     },
     "Jaecoin.WebAPI": {
-      "commandName": "Project",
+      "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {

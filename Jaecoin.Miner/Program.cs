@@ -47,7 +47,7 @@ namespace Jaecoin.Miner
                 //I send the proof to the node (address).
                 SendResult(address + pathMine, last.lastProof, last.previousHash, proof);
 
-                hashRate = ((decimal)((proof - last.lastProof) / ((decimal)(elapsed.ElapsedMilliseconds / 1000)))) / 1024; //to transform it to kilohashes
+                hashRate = ((decimal)((proof - last.lastProof) / ((decimal)(elapsed.ElapsedMilliseconds / (decimal)1000)))) / 1024; //to transform it to kilohashes
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(DateTime.Now.ToShortTimeString() + " - Result found and sent! ({0}s)", elapsed.ElapsedMilliseconds / 1000);
